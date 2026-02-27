@@ -15,7 +15,7 @@ import java.util.Map;
 public class SampleController {
 
     // 내부 클래스로 수업용으로 만듦.
-    class SampleDTO {
+   public class SampleDTO {
         private String p1,p2,p3;
 
         public String getP1() {
