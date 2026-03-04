@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+<body>
+<div layout:fragment="content">
+    <div>
+        <h1>임시 Board List</h1>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    const arr = [[${strList}]]
+    console.log("arr : ", arr)
+</script>
+</body>
+</html>
