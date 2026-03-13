@@ -107,5 +107,22 @@ public class ReplyController {
         resultMap.put("rno", rno);
         return resultMap;
     }
+
+    @Tag(name = "댓글 수정 put 방식",
+            description = "댓글 수정을 진행함, put 형식으로")
+    @PutMapping(value = "/{rno}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String,Long> modify(
+            @PathVariable("rno") Long rno,
+            @RequestBody ReplyDTO replyDTO
+    ) throws BindException {
+        log.info(" ReplyController 댓글 수정 작업 , replyDTO: " + replyDTO);
+        log.info(" ReplyController 댓글 수정 작업2 , 수정할 댓글 번혼 rno : " + rno);
+
+        replyService.modify(replyDTO);
+        Map<String,Long> resultMap = new HashMap<>();
+        resultMap.put("rno",rno);
+        return resultMap;
+    }
+
 }
 
