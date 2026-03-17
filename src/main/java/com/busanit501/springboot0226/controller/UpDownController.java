@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
 @RestController
 @Log4j2
 public class UpDownController {
@@ -30,7 +34,24 @@ public class UpDownController {
         // 첨부된 이미지들의 파일명 확인 해보기.
          if(uploadFileDTO.getFiles() != null) {
              uploadFileDTO.getFiles().forEach(file -> {
+                 // 원본 이미지 파일명을 , 서버의 로그로 확인.
                  log.info(file.getOriginalFilename());
+
+                 // 원본 이미지 파일명
+                 String originName = file.getOriginalFilename();
+                 // uuid 를 이용해서, 원본 파일명을, 중복 안되게, 랜덤한 문자열의 길이로 수정.
+                 String uuid = UUID.randomUUID().toString();
+                 // 업로드 경로 : c:\\upload\\springTest
+                 // 랜덤하게 생성된 uuid 를 덧붙여서, 원본 파일명과 같이 사용함.
+                 Path savePath = Paths.get(uploadPath, uuid+"_"+originName);
+
+                 // 실제 경로에, 이미지 파일 저장.
+                 try {
+                     file.transferTo(savePath);
+                 }catch (Exception e) {
+                     e.printStackTrace();
+                 }
+
              });
          }
 
