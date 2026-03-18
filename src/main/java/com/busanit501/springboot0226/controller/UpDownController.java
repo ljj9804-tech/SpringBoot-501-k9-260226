@@ -42,8 +42,10 @@ public class UpDownController {
 
                  // 원본 이미지 파일명
                  String originName = file.getOriginalFilename();
+                 log.info("UpDownController originName : " + originName);
                  // uuid 를 이용해서, 원본 파일명을, 중복 안되게, 랜덤한 문자열의 길이로 수정.
                  String uuid = UUID.randomUUID().toString();
+                 log.info("UpDownController uuid : " + uuid);
                  // 업로드 경로 : c:\\upload\\springTest
                  // 랜덤하게 생성된 uuid 를 덧붙여서, 원본 파일명과 같이 사용함.
                  Path savePath = Paths.get(uploadPath, uuid+"_"+originName);
