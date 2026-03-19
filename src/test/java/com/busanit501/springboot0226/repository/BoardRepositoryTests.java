@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -137,8 +138,8 @@ public class BoardRepositoryTests {
     // @EntityGraph 이용한 호출 , 즉 N+1 문제 해결책.
     // 조인해서, 두 테이블을 붙여서, 한번만 호출할 예정.
     // 이 과정을 보여주기.
-    @Test
     @Transactional
+    @Test
     //import org.springframework.transaction.annotation.Transactional;
     public void testReadWithImage() {
         // 샘플테이블에서, 게시글 번호를 조회.
@@ -159,6 +160,34 @@ public class BoardRepositoryTests {
         for( BoardImage boardImage: board.getImageSet()) {
             log.info("게시글에 첨부된 이미지 조회 : " + boardImage);
         }
+
+    }
+
+
+    // 수정해보기.
+    // 해당 메서드안에 여러개의 작업을 하나의 단위로 만들어서, 모두 수행이 되면 진행시키고, 하나라도 진행이 안되면, 진행안해줘
+    // 예시) 돈 이체(메서드기능), 행위1:(송금자 계자 -), 행위2:(받는자.계좌 +)
+    // 예시) (행위1, 행위2) : 하나의 단위로 묶기, 트랜잭션 무조건 행위1, 행위2가 다같이 실행이 되어야함.
+    // 만약, 2개중에 하나라도 안되면, 무조건 롤백.
+    @Transactional
+    @Commit
+    @Test
+    //import org.springframework.transaction.annotation.Transactional;
+    public void testModifyImage() {
+        // 기존 게시글에는, 첨부 이미지 샘플 3개있음.
+        Optional<Board> result = boardRepository.findByIdWithImages(1L);
+        Board board = result.orElseThrow();
+
+        // 기존의 첨부파일들은 삭제
+        board.clearImages();
+
+        // 새로운 첨부 파일들 추가
+        for(int i = 0; i < 2 ; i++) {
+            board.addImage(UUID.randomUUID().toString(), "수정_file_" + i + ".png");
+        }
+
+        // 테스트 실행을 하면, 고아 객체 형태로 남아 있는 거 먼저 확인. 후, 고아 객체 제거하는 설정하기.
+        boardRepository.save(board);
 
     }
 
