@@ -1,12 +1,14 @@
 package com.busanit501.springboot0226.service;
 
 import com.busanit501.springboot0226.dto.BoardDTO;
+import com.busanit501.springboot0226.dto.BoardListAllDTO;
 import com.busanit501.springboot0226.dto.PageRequestDTO;
 import com.busanit501.springboot0226.dto.PageResponseDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -143,9 +145,27 @@ public class BoardServiceTests {
     // 삭제 테스트 1) 댓글이 있는 경우, 2) 댓글 없는 경우
     @Test
     public void testDeleteBoardReplyWithImage() {
-        Long bno = 202L;
+        Long bno = 200L;
         boardService.remove(bno);
     }
 
+    // 목록 조회,
+    // 모두조회, 게시글 + 댓글갯수 + 첨부 이미지들
+    @Test
+    @Transactional
+    public void testSelectAllBoardWithReplyCountAndImage() {
+        // 검색할 더미 데이터
+        // 준비물 1) PageRequestDTO, 키워드, 페이지, 사이즈 정보가 다 있음.
+        PageRequestDTO pageRequestDTO =
+                PageRequestDTO.builder()
+                        .page(1)
+                        .type("tcw")
+                        .keyword("ㅇㅇ")
+                        .size(10)
+                        .build();
+
+        PageResponseDTO<BoardListAllDTO> list = boardService.listWithAll(pageRequestDTO);
+        log.info("list: " + list.toString());
+    }
 
 }
