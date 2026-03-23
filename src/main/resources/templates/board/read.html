@@ -62,18 +62,19 @@
                     </div>
                 </div> <!--        card-body 끝나는 부분-->
             </div>   <!--        card 끝나는 부분-->
+            <!--첨부이미지 표시 영역-->
+            <div class="col">
+                <div class="card" th:if="${dto.fileNames != null && dto.fileNames.size()>0}">
+                    <img class="card-img-top"
+                         th:each="fileName: ${dto.fileNames}"
+                         th:src="|/view/${fileName}|"
+                    >
+                </div>
+            </div>
+            <!--첨부이미지 표시 영역-->
         </div> <!--        col 끝나는 부분-->
 
-        <!--첨부이미지 표시 영역-->
-        <div class="col">
-            <div class="card" th:if="${dto.fileNames != null && dto.fileNames.size()>0}">
-                <img class="card-img-top"
-                     th:each="fileName: ${dto.fileNames}"
-                     th:src="|/view/${fileName}|"
-                >
-            </div>
-        </div>
-        <!--첨부이미지 표시 영역-->
+
 
     </div> <!--        row 끝나는 부분-->
 
