@@ -161,6 +161,33 @@
         }, false
     )
 
+    // 화면에서, 엑스박스를 클릭시, 화면에서 제거를 하기.
+    // 글작성 화면에서, 첨부이미지를 포함해서, 서버에 axios 이용해서 전달하는 과정과 거의 비슷.
+    // 수정시, 최종으로 삭제할 파일을 담아둘 목록 만들기.
+    //최종으로 삭제할 첨부 파일 목록
+    const removeFileList = []
+
+    function removeFile(uuid, fileName, obj) {
+        // yes -> 계속 삭제 진행,
+        // no -> 함수 나가기.
+        if (!confirm("파일을 삭제하시겠습니까?")) {
+            return
+        }
+        console.log("uuid : " + uuid)
+        console.log("fileName : " + fileName)
+        console.log("obj : " + obj)
+        console.log("removeFileList : " + removeFileList)
+
+
+        // 삭제할 명단에 추가하기
+        removeFileList.push({uuid, fileName})
+        // 화면 상에서 카드 요소를 제거하기.
+        const targetDiv = obj.closest(".card")
+        targetDiv.remove()
+
+    }
+
+
 </script>
 </body>
 </html>
